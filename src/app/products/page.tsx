@@ -4,15 +4,18 @@ import { useProducts } from "@/application/products/useProducts";
 import { Input } from "@/presentation/components/ui/input";
 import { Button } from "@/presentation/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/presentation/components/ui/card";
-import { Skeleton } from "@/presentation/components/ui/skeleton";
-import { Search, Info, PiggyBank, Briefcase } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search, Info, PiggyBank, Briefcase } from "lucide-react";
+import { Product } from "@/domain/entities";
 import Link from "next/link";
+import React from "react";
 
 export default function ProductsPage() {
-  const { data: products, isLoading, filters, setFilters } = useProducts();
+  const { data: response, isLoading, filters, setFilters, setPage } = useProducts();
+  const products = response?.data;
+  const meta = response?.meta;
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilters({ ...filters, name: e.target.value });
+    setFilters({ ...filters, name: e.target.value, page: 1 });
   };
 
   return (
@@ -37,50 +40,95 @@ export default function ProductsPage() {
 
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[1, 2, 3].map((i) => (
-            <Skeleton key={i} className="h-80 rounded-2xl" />
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div key={i} className="h-80 rounded-2xl bg-slate-100 animate-pulse overflow-hidden border border-slate-200">
+              <div className="h-1/3 bg-slate-200/50" />
+              <div className="p-6 space-y-4">
+                <div className="h-4 bg-slate-200 rounded w-3/4" />
+                <div className="h-3 bg-slate-200 rounded w-1/2" />
+                <div className="grid grid-cols-2 gap-4 pt-4">
+                  <div className="h-10 bg-slate-200 rounded-xl" />
+                  <div className="h-10 bg-slate-200 rounded-xl" />
+                </div>
+              </div>
+            </div>
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products?.map((product) => (
-            <Card key={product.id} className="group border-slate-200 transition-all hover:shadow-xl hover:border-accent/50 rounded-2xl overflow-hidden flex flex-col">
-              <CardHeader className="bg-slate-50/50 pb-4">
-                <div className="flex items-center justify-between mb-2">
-                  {product.type === "Ahorro" ? (
-                    <PiggyBank className="w-8 h-8 text-primary" />
-                  ) : (
-                    <Briefcase className="w-8 h-8 text-primary" />
-                  )}
-                  <span className="text-xs font-bold uppercase tracking-widest text-secondary bg-secondary/10 px-3 py-1 rounded-full">
-                    {product.type}
-                  </span>
-                </div>
-                <CardTitle className="text-xl group-hover:text-primary transition-colors">{product.name}</CardTitle>
-                <CardDescription className="line-clamp-2">{product.description}</CardDescription>
-              </CardHeader>
-              <CardContent className="grow pt-6">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="p-3 bg-slate-50 rounded-xl">
-                    <p className="text-[10px] text-slate-400 uppercase font-bold mb-1">Tasa E.A.</p>
-                    <p className="text-lg font-bold text-primary">{(product.interestRate * 100).toFixed(1)}%</p>
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {products?.map((product: Product) => (
+              <Card key={product.id} className="group border-slate-200 transition-all hover:shadow-xl hover:border-accent/50 rounded-2xl overflow-hidden flex flex-col">
+                <CardHeader className="bg-slate-50/50 pb-4">
+                  <div className="flex items-center justify-between mb-2">
+                    {product.type === "Ahorro" ? (
+                      <PiggyBank className="w-8 h-8 text-primary" />
+                    ) : (
+                      <Briefcase className="w-8 h-8 text-primary" />
+                    )}
+                    <span className="text-xs font-bold uppercase tracking-widest text-secondary bg-secondary/10 px-3 py-1 rounded-full">
+                      {product.type}
+                    </span>
                   </div>
-                  <div className="p-3 bg-slate-50 rounded-xl">
-                    <p className="text-[10px] text-slate-400 uppercase font-bold mb-1">Mínimo</p>
-                    <p className="text-lg font-bold text-primary">${product.minAmount.toLocaleString()}</p>
+                  <CardTitle className="text-xl group-hover:text-primary transition-colors">{product.name}</CardTitle>
+                  <CardDescription className="line-clamp-2">{product.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="grow pt-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="p-3 bg-slate-50 rounded-xl">
+                      <p className="text-[10px] text-slate-400 uppercase font-bold mb-1">Tasa E.A.</p>
+                      <p className="text-lg font-bold text-primary">{(product.interestRate * 100).toFixed(1)}%</p>
+                    </div>
+                    <div className="p-3 bg-slate-50 rounded-xl">
+                      <p className="text-[10px] text-slate-400 uppercase font-bold mb-1">Mínimo</p>
+                      <p className="text-lg font-bold text-primary">${product.minAmount.toLocaleString()}</p>
+                    </div>
                   </div>
+                </CardContent>
+                <CardFooter className="pt-0 pb-6 h-auto">
+                  <Button asChild className="w-full bg-primary hover:bg-primary/90 text-white font-bold h-11 rounded-xl shadow-md">
+                    <Link href="/simulator">
+                      Simular Rentabilidad
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+
+          {/* Pagination */}
+          {meta && meta.totalPages > 1 && (
+            <div className="mt-16 flex items-center justify-center gap-6">
+              <Button
+                variant="outline"
+                size="icon"
+                className="rounded-full h-12 w-12 border-slate-200 hover:bg-slate-50 hover:text-primary shadow-sm active:scale-95 transition-all"
+                onClick={() => setPage(Math.max(1, meta.page - 1))}
+                disabled={meta.page === 1}
+              >
+                <ChevronLeft className="h-6 w-6" />
+              </Button>
+
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-medium text-slate-500">Página</span>
+                <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-primary text-white font-bold shadow-lg">
+                  {meta.page}
                 </div>
-              </CardContent>
-              <CardFooter className="pt-0 pb-6 h-auto">
-                <Button asChild className="w-full bg-primary hover:bg-primary/90 text-white font-bold h-11 rounded-xl shadow-md">
-                  <Link href="/simulator">
-                    Simular Rentabilidad
-                  </Link>
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
+                <span className="text-sm font-medium text-slate-500">de {meta.totalPages}</span>
+              </div>
+
+              <Button
+                variant="outline"
+                size="icon"
+                className="rounded-full h-12 w-12 border-slate-200 hover:bg-slate-50 hover:text-primary shadow-sm active:scale-95 transition-all"
+                onClick={() => setPage(Math.min(meta.totalPages, meta.page + 1))}
+                disabled={meta.page === meta.totalPages}
+              >
+                <ChevronRight className="h-6 w-6" />
+              </Button>
+            </div>
+          )}
+        </>
       )}
 
       {!isLoading && products?.length === 0 && (

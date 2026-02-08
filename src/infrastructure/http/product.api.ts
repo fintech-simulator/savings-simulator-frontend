@@ -6,14 +6,20 @@ import {
   SimulationResponse,
   OnboardingRequest,
   OnboardingResponse,
+  PaginatedResponse,
 } from "../../domain/entities";
 
 export class ProductApiRepository implements IProductRepository {
   async getProducts(params?: {
     name?: string;
     type?: string;
-  }): Promise<Product[]> {
-    const { data } = await axiosClient.get<Product[]>("/products", { params });
+    page?: number;
+    limit?: number;
+  }): Promise<PaginatedResponse<Product>> {
+    const { data } = await axiosClient.get<PaginatedResponse<Product>>(
+      "/products",
+      { params },
+    );
     return data;
   }
 

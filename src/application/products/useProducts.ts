@@ -2,8 +2,15 @@ import { useQuery } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import { productRepository } from "../../infrastructure/http/product.api";
 
+export interface ProductFilters {
+  name?: string;
+  type?: string;
+  page?: number;
+  limit?: number;
+}
+
 export function useProducts(
-  initialFilters: { name?: string; type?: string } = {},
+  initialFilters: ProductFilters = { page: 1, limit: 10 },
 ) {
   const [filters, setFilters] = useState(initialFilters);
   const [debouncedFilters, setDebouncedFilters] = useState(initialFilters);
@@ -21,9 +28,19 @@ export function useProducts(
     queryFn: () => productRepository.getProducts(debouncedFilters),
   });
 
+  const setPage = (page: number) => {
+    setFilters((prev) => ({ ...prev, page }));
+  };
+
+  const setLimit = (limit: number) => {
+    setFilters((prev) => ({ ...prev, limit, page: 1 }));
+  };
+
   return {
     ...query,
     filters,
     setFilters,
+    setPage,
+    setLimit,
   };
 }
