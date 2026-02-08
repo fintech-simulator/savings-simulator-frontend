@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Simulador de Ahorro Digital - Frontend PRO
 
-## Getting Started
+Prueba Técnica desarrollada con una arquitectura por capas (Clean Architecture) para Banco Caja Social.
 
-First, run the development server:
+## 🚀 Tecnologías
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Framework**: Next.js 15 (App Router)
+- **Lenguaje**: TypeScript
+- **Estilos**: Tailwind CSS 4
+- **Estado/Data**: React Query + Axios + Zustand
+- **Formularios**: React Hook Form + Zod
+- **UI Components**: Shadcn UI (Radix UI)
+- **PWA**: Soporte nativo y manifiesto
+
+## 🏗 Arquitectura (PRO / Enterprise)
+
+El proyecto está estructurado en capas para asegurar que el framework sea un detalle y el dominio sea independiente:
+
+1. **Infrastructure**: Implementación de Axios y repositorios concretos.
+2. **Domain**: Definición de entidades, tipos e interfaces (contratos).
+3. **Application**: Casos de uso implementados a través de hooks (`useProducts`, `useSimulation`, `useOnboarding`).
+4. **Presentation**: Componentes de UI, layouts y el App Router de Next.js.
+5. **Shared**: Utilidades transversales y constantes.
+
+## 📁 Estructura de Carpetas
+
+```text
+src/
+├── app/                  # Next.js App Router (UI Layer)
+├── application/          # Use Cases (Hooks)
+├── domain/               # Core Logic & Types
+├── infrastructure/       # External API & HTTP Clients
+├── presentation/         # UI Components & ViewModels
+├── providers/            # React Query Providers
+└── shared/               # Utils & Constants
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠 Instalación y Ejecución
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clonar el repositorio.
+2. Instalar dependencias: `npm install`
+3. Ejecutar en desarrollo: `npm run dev`
+4. Base URL de API (Configurada para local): `http://localhost:4005/api/`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 💡 Decisiones de Diseño
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **SSR/ISR**: Se utilizó renderizado híbrido. El listado de productos se beneficia de React Query para hidratación y búsqueda debounced en cliente.
+- **Aesthetics**: Se implementó un tema "Metallic Blue" con acentos rojos del Banco Caja Social, usando gradientes y glassmorphism para un look Premium.
+- **Validaciones**: Zod garantiza que los datos en el simulador y onboarding sean íntegros antes de llegar a la API.
