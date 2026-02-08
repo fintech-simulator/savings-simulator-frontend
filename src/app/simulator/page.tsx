@@ -19,12 +19,14 @@ const formSchema = z.object({
   annualInterestRate: z.coerce.number().min(0.01, "La tasa debe ser mayor a 0").max(0.40, "La tasa no puede exceder el 40%"),
 });
 
+type FormValues = z.infer<typeof formSchema>;
+
 export default function SimulatorPage() {
   const [result, setResult] = useState<{ estimatedProfit: number; totalBalance: number } | null>(null);
   const simulation = useSimulation();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema) as any,
     defaultValues: {
       initialAmount: 1000000,
       monthlyContribution: 100000,

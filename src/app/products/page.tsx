@@ -59,7 +59,7 @@ export default function ProductsPage() {
                 <CardTitle className="text-xl group-hover:text-primary transition-colors">{product.name}</CardTitle>
                 <CardDescription className="line-clamp-2">{product.description}</CardDescription>
               </CardHeader>
-              <CardContent className="flex-grow pt-6">
+              <CardContent className="grow pt-6">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="p-3 bg-slate-50 rounded-xl">
                     <p className="text-[10px] text-slate-400 uppercase font-bold mb-1">Tasa E.A.</p>

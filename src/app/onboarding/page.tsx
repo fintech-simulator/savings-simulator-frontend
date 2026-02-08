@@ -5,10 +5,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useOnboarding } from "@/application/onboarding/useOnboarding";
 import { Button } from "@/presentation/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/presentation/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/presentation/components/ui/form";
 import { Input } from "@/presentation/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/presentation/components/ui/card";
-import { User, FileText, Mail, Shield, CheckCircle, ArrowRight, Loader2, RefreshCcw } from "lucide-react";
+import { User, FileText, Mail, Shield, CheckCircle, Loader2 } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 import { cn } from "@/shared/utils/cn";
@@ -20,11 +20,13 @@ const formSchema = z.object({
   recaptchaToken: z.string().min(1, "Debes completar el captcha"),
 });
 
+type FormValues = z.infer<typeof formSchema>;
+
 export default function OnboardingPage() {
   const [successData, setSuccessData] = useState<{ id: string } | null>(null);
   const onboarding = useOnboarding();
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
@@ -38,7 +40,7 @@ export default function OnboardingPage() {
     try {
       const data = await onboarding.mutateAsync(values);
       setSuccessData({ id: data.id });
-    } catch (error) {
+    } catch {
       form.setError("recaptchaToken", {
         type: "manual",
         message: "Token de recaptcha inválido. Simulación: Usa 'OK' para éxito."
@@ -170,7 +172,7 @@ export default function OnboardingPage() {
                 </Button>
 
                 <p className="text-center text-[10px] text-slate-400 px-8">
-                  Al hacer clic en "Iniciar Apertura Ahora", aceptas nuestra política de tratamiento de datos y los términos del simulador.
+                  Al hacer clic en &quot;Iniciar Apertura Ahora&quot;, aceptas nuestra política de tratamiento de datos y los términos del simulador.
                 </p>
               </form>
             </Form>

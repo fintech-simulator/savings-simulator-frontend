@@ -24,7 +24,7 @@ export default function RootLayout({
       <body className={`${inter.className} antialiased soft-gradient min-h-screen flex flex-col`}>
         <ReactQueryProvider>
           <Header />
-          <main className="flex-grow">
+          <main className="grow">
             {children}
           </main>
           <Footer />
