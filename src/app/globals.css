@@ -1,23 +1,23 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #004a99;
-  /* Deep Metallic Blue */
+  --color-primary: #0f172a;
+  /* Corporate Navy */
   --color-primary-foreground: #ffffff;
 
-  --color-secondary: #e30613;
-  /* Brand Accent Red */
+  --color-secondary: #0063a7;
+  /* Clean Solid Blue */
   --color-secondary-foreground: #ffffff;
 
-  --color-accent: #00a8e8;
-  /* Sky Blue highlight */
+  --color-accent: #0ea5e9;
+  /* Professional Cyber Blue */
   --color-accent-foreground: #ffffff;
 
   --color-card: #ffffff;
-  --color-card-foreground: #1a1a1a;
+  --color-card-foreground: #0f172a;
 
-  --color-muted: #f3f4f6;
-  --color-muted-foreground: #6b7280;
+  --color-muted: #f8fafc;
+  --color-muted-foreground: #64748b;
 
   --radius-lg: 0.75rem;
   --radius-md: 0.5rem;
@@ -51,8 +51,8 @@
   --background: #f8fafc;
   --foreground: #0f172a;
 
-  --primary: 210 100% 30%;
-  --secondary: 356 95% 45%;
+  --primary: 222.2 47.4% 11.2%;
+  --secondary: 199 89% 48%;
 
   --card: 0 0% 100%;
   --card-foreground: 222.2 84% 4.9%;
@@ -71,7 +71,7 @@
 
   --border: 214.3 32.1% 91.4%;
   --input: 214.3 32.1% 91.4%;
-  --ring: 222.2 84% 4.9%;
+  --ring: 199 89% 48%;
 
   --radius: 0.5rem;
 }
@@ -86,10 +86,10 @@
   --popover: 222.2 84% 4.9%;
   --popover-foreground: 210 40% 98%;
 
-  --primary: 210 100% 30%;
+  --primary: 210 40% 98%;
   --primary-foreground: 222.2 47.4% 11.2%;
 
-  --secondary: 217.2 32.6% 17.5%;
+  --secondary: 199 89% 48%;
   --secondary-foreground: 210 40% 98%;
 
   --muted: 217.2 32.6% 17.5%;
@@ -103,7 +103,7 @@
 
   --border: 217.2 32.6% 17.5%;
   --input: 217.2 32.6% 17.5%;
-  --ring: 212.7 26.8% 83.9%;
+  --ring: 199 89% 48%;
 }
 
 @layer base {
@@ -119,16 +119,20 @@
 }
 
 .glass-morphism {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 74, 153, 0.1);
 }
 
-.metallic-gradient {
-  background: linear-gradient(135deg, #004a99 0%, #00a8e8 50%, #004a99 100%);
+.tech-card {
+  @apply bg-white border border-slate-200 shadow-sm transition-all hover:shadow-md hover:border-secondary/20;
 }
 
-.soft-gradient {
-  background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+.subtle-gradient {
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+.solid-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
 }
