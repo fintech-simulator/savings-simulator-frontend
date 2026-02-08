@@ -4,6 +4,7 @@ import { useProducts } from "@/application/products/useProducts";
 import { Input } from "@/presentation/components/ui/input";
 import { Button } from "@/presentation/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/presentation/components/ui/card";
+import { ProductSkeleton } from "@/presentation/components/ui/skeleton";
 import { ChevronLeft, ChevronRight, Search, Info, PiggyBank, Briefcase } from "lucide-react";
 import { Product } from "@/domain/entities";
 import Link from "next/link";
@@ -41,17 +42,7 @@ export default function ProductsPage() {
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="h-80 rounded-2xl bg-slate-100 animate-pulse overflow-hidden border border-slate-200">
-              <div className="h-1/3 bg-slate-200/50" />
-              <div className="p-6 space-y-4">
-                <div className="h-4 bg-slate-200 rounded w-3/4" />
-                <div className="h-3 bg-slate-200 rounded w-1/2" />
-                <div className="grid grid-cols-2 gap-4 pt-4">
-                  <div className="h-10 bg-slate-200 rounded-xl" />
-                  <div className="h-10 bg-slate-200 rounded-xl" />
-                </div>
-              </div>
-            </div>
+            <ProductSkeleton key={i} />
           ))}
         </div>
       ) : (
