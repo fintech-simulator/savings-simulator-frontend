@@ -8,7 +8,7 @@ import { Button } from "@/presentation/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/presentation/components/ui/form";
 import { Input } from "@/presentation/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/presentation/components/ui/card";
-import { User, FileText, Mail, Shield, CheckCircle, Loader2 } from "lucide-react";
+import { User, FileText, Mail, Shield, CheckCircle, Loader2, ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 import { cn } from "@/shared/utils/cn";
@@ -51,19 +51,19 @@ export default function OnboardingPage() {
   if (successData) {
     return (
       <div className="container mx-auto py-24 px-4 text-center">
-        <div className="max-w-md mx-auto p-12 bg-white rounded-3xl shadow-2xl border border-blue-50">
+        <div className="max-w-md mx-auto p-12 bg-white rounded-3xl shadow-2xl border-2 border-secondary/20">
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-8 animate-bounce">
             <CheckCircle className="w-10 h-10 text-green-600" />
           </div>
-          <h1 className="text-3xl font-extrabold text-primary mb-4">¡Solicitud Exitosa!</h1>
-          <p className="text-slate-500 mb-8">
+          <h1 className="text-4xl font-extrabold text-primary mb-4">¡Solicitud Exitosa!</h1>
+          <p className="text-slate-600 mb-8 font-medium">
             Hemos registrado tu interés. Uno de nuestros asesores se pondrá en contacto contigo pronto.
           </p>
-          <div className="p-4 bg-slate-50 rounded-xl border mb-8">
-            <p className="text-[10px] text-slate-400 uppercase font-bold mb-1">Código de Solicitud</p>
-            <p className="text-lg font-mono font-bold text-primary">{successData.id}</p>
+          <div className="p-5 bg-gradient-to-br from-blue-50 to-slate-50 rounded-xl border-2 border-secondary/20 mb-8">
+            <p className="text-xs text-secondary uppercase font-bold mb-2 tracking-wider">Código de Solicitud</p>
+            <p className="text-2xl font-mono font-black text-primary">{successData.id}</p>
           </div>
-          <Button asChild className="w-full bg-primary hover:bg-primary/90 text-white font-bold h-12 rounded-xl">
+          <Button asChild className="w-full bg-secondary hover:bg-secondary/90 text-white font-bold h-14 rounded-xl shadow-lg">
             <Link href="/">Volver al inicio</Link>
           </Button>
         </div>
@@ -71,114 +71,120 @@ export default function OnboardingPage() {
     );
   }
 
-  return (
-    <div className="container mx-auto py-12 px-4 lg:px-8">
-      <div className="max-w-xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-primary mb-2">Abre tu cuenta</h1>
-          <p className="text-slate-500">Únete al banco que apoya tus sueños. Proceso 100% digital.</p>
-        </div>
-
-        <Card className="border-slate-200 shadow-2xl rounded-3xl overflow-hidden p-2">
-          <CardHeader className="text-center pb-2">
-            <CardTitle className="text-xl">Información Personal</CardTitle>
-            <CardDescription>Solo necesitaremos unos datos básicos para empezar.</CardDescription>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="flex items-center gap-2 text-slate-700 font-semibold">
-                        <User className="w-4 h-4 text-primary" /> Nombre Completo
-                      </FormLabel>
-                      <FormControl>
-                        <Input placeholder="Juan Perez" {...field} className="h-12 bg-slate-50/50" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="document"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="flex items-center gap-2 text-slate-700 font-semibold">
-                        <FileText className="w-4 h-4 text-primary" /> Documento de Identidad
-                      </FormLabel>
-                      <FormControl>
-                        <Input placeholder="C.C. o C.E." {...field} className="h-12 bg-slate-50/50" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="flex items-center gap-2 text-slate-700 font-semibold">
-                        <Mail className="w-4 h-4 text-primary" /> Correo Electrónico
-                      </FormLabel>
-                      <FormControl>
-                        <Input type="email" placeholder="tu@correo.com" {...field} className="h-12 bg-slate-50/50" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Simulated Recaptcha */}
-                <Card className="bg-slate-50 border-slate-200 rounded-2xl overflow-hidden">
-                  <CardContent className="p-4 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <Shield className="w-8 h-8 text-blue-500" />
-                      <div>
-                        <p className="text-sm font-bold text-slate-700 leading-tight">Verificación</p>
-                        <p className="text-[10px] text-slate-400 font-medium">Protegido por reCAPTCHA</p>
-                      </div>
-                    </div>
-                    <FormField
-                      control={form.control}
-                      name="recaptchaToken"
-                      render={({ field }) => (
-                        <FormItem className="space-y-0">
-                          <FormControl>
-                            <div className="flex flex-col items-end gap-1">
-                              <Input
-                                placeholder="Escribe 'OK'"
-                                {...field}
-                                className={cn(
-                                  "w-32 h-10 text-center font-bold uppercase tracking-wider",
-                                  field.value === "OK" ? "border-green-500 bg-green-50 text-green-700" : ""
-                                )}
-                              />
-                              <FormMessage className="text-[10px]" />
-                            </div>
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                  </CardContent>
-                </Card>
-
-                <Button type="submit" className="w-full bg-secondary hover:bg-secondary/90 text-white font-bold h-14 rounded-2xl shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98]" disabled={onboarding.isPending}>
-                  {onboarding.isPending ? <Loader2 className="animate-spin mr-2" /> : "Iniciar Apertura Ahora"}
-                </Button>
-
-                <p className="text-center text-[10px] text-slate-400 px-8">
-                  Al hacer clic en &quot;Iniciar Apertura Ahora&quot;, aceptas nuestra política de tratamiento de datos y los términos del simulador.
-                </p>
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
+  return (<div className="container mx-auto py-12 px-4 lg:px-8">
+    <div className="max-w-xl mx-auto">
+      <div className="mb-8">
+        <Link href="/products" className="inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-secondary transition-colors group">
+          <ChevronLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+          Volver a Productos
+        </Link>
       </div>
+
+      <div className="text-center mb-12">
+        <h1 className="text-4xl font-extrabold text-primary mb-3 tracking-tight">Abre tu cuenta</h1>
+        <p className="text-slate-600 text-lg font-medium">Únete al banco que apoya tus sueños. Proceso 100% digital.</p>
+      </div>
+
+      <Card className="border-2 border-slate-200 shadow-xl rounded-3xl overflow-hidden">
+        <CardHeader className="bg-primary text-white text-center pb-8 pt-8">
+          <CardTitle className="text-2xl font-bold mb-2">Información Personal</CardTitle>
+          <CardDescription className="text-blue-100 font-medium">Solo necesitaremos unos datos básicos para empezar.</CardDescription>
+        </CardHeader>
+        <CardContent className="pt-6">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2 text-primary font-bold">
+                      <User className="w-4 h-4 text-secondary" /> Nombre Completo
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Juan Perez" {...field} className="h-14 border-slate-200 focus:ring-secondary focus:border-secondary" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="document"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2 text-primary font-bold">
+                      <FileText className="w-4 h-4 text-secondary" /> Documento de Identidad
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="C.C. o C.E." {...field} className="h-14 border-slate-200 focus:ring-secondary focus:border-secondary" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2 text-primary font-bold">
+                      <Mail className="w-4 h-4 text-secondary" /> Correo Electrónico
+                    </FormLabel>
+                    <FormControl>
+                      <Input type="email" placeholder="tu@correo.com" {...field} className="h-14 border-slate-200 focus:ring-secondary focus:border-secondary" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Simulated Recaptcha */}
+              <Card className="bg-gradient-to-br from-blue-50 to-slate-50 border-2 border-secondary/20 rounded-2xl overflow-hidden">
+                <CardContent className="p-5 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Shield className="w-9 h-9 text-secondary" />
+                    <div>
+                      <p className="text-sm font-bold text-primary leading-tight">Verificación</p>
+                      <p className="text-xs text-slate-500 font-medium">Protegido por reCAPTCHA</p>
+                    </div>
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name="recaptchaToken"
+                    render={({ field }) => (
+                      <FormItem className="space-y-0">
+                        <FormControl>
+                          <div className="flex flex-col items-end gap-1">
+                            <Input
+                              placeholder="Escribe 'OK'"
+                              {...field}
+                              className={cn(
+                                "w-32 h-11 text-center font-bold uppercase tracking-wider border-2",
+                                field.value === "OK" ? "border-green-500 bg-green-50 text-green-700" : "border-secondary/30"
+                              )}
+                            />
+                            <FormMessage className="text-[10px]" />
+                          </div>
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </CardContent>
+              </Card>
+
+              <Button type="submit" className="w-full bg-secondary hover:bg-secondary/90 text-white font-bold h-16 rounded-xl shadow-lg hover:shadow-xl transition-all" disabled={onboarding.isPending}>
+                {onboarding.isPending ? <Loader2 className="animate-spin mr-2" /> : "Iniciar Apertura Ahora"}
+              </Button>
+
+              <p className="text-center text-[10px] text-slate-400 px-8">
+                Al hacer clic en &quot;Iniciar Apertura Ahora&quot;, aceptas nuestra política de tratamiento de datos y los términos del simulador.
+              </p>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
     </div>
+  </div>
   );
 }

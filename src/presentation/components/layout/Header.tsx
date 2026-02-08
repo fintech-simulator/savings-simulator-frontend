@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/shared/utils/cn";
 
 const navItems = [
+  { name: "Inicio", href: "/" },
   { name: "Productos", href: "/products" },
   { name: "Simulador", href: "/simulator" },
 ];

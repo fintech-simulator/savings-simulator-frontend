@@ -9,9 +9,10 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/presentation/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/presentation/components/ui/card";
 import { Calculator, TrendingUp, DollarSign, Calendar, ArrowRight, Loader2, ChevronLeft } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSearchParams } from "next/navigation";
 
 const formSchema = z.object({
   initialAmount: z.coerce.number().min(10000, "El monto inicial debe ser al menos $10.000"),
@@ -25,6 +26,7 @@ type FormValues = z.infer<typeof formSchema>;
 export default function SimulatorPage() {
   const [result, setResult] = useState<{ estimatedProfit: number; totalBalance: number } | null>(null);
   const simulation = useSimulation();
+  const searchParams = useSearchParams();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema) as any,
@@ -35,6 +37,19 @@ export default function SimulatorPage() {
       annualInterestRate: 0.12,
     },
   });
+
+  // Pre-fill form with URL parameters
+  useEffect(() => {
+    const rate = searchParams.get("rate");
+    const min = searchParams.get("min");
+
+    if (rate) {
+      form.setValue("annualInterestRate", parseFloat(rate));
+    }
+    if (min) {
+      form.setValue("initialAmount", parseFloat(min));
+    }
+  }, [searchParams, form]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
@@ -62,18 +77,18 @@ export default function SimulatorPage() {
 
         <div className="text-center mb-16">
           <h1 className="text-5xl font-extrabold text-primary mb-4 tracking-tight">Simulador de Ahorro</h1>
-          <p className="text-slate-500 text-lg max-w-2xl mx-auto font-medium">Calcula tu rentabilidad con la solidez y tecnología de Banco Belolli.</p>
+          <p className="text-slate-600 text-lg max-w-2xl mx-auto font-medium leading-relaxed">Calcula tu rentabilidad con la solidez y tecnología de Banco Belolli.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {/* Form Side */}
-          <Card className="border-slate-200 shadow-xl rounded-3xl overflow-hidden bg-white">
+          <Card className="border-slate-200 shadow-lg rounded-3xl overflow-hidden bg-white">
             <CardHeader className="bg-primary text-white pb-10 pt-8">
               <div className="flex items-center gap-3 mb-2">
                 <Calculator className="w-8 h-8 text-accent" />
                 <CardTitle className="text-2xl font-bold">Tus Datos</CardTitle>
               </div>
-              <CardDescription className="text-slate-300 font-medium">Completa el formulario para realizar el cálculo proyectado.</CardDescription>
+              <CardDescription className="text-blue-100 font-medium">Completa el formulario para realizar el cálculo proyectado.</CardDescription>
             </CardHeader>
             <CardContent className="pt-10 px-8 pb-10">
               <Form {...form}>
@@ -171,39 +186,57 @@ export default function SimulatorPage() {
                   animate={{ opacity: 1, x: 0 }}
                   className="space-y-6"
                 >
-                  <Card className="border border-slate-200 bg-white overflow-hidden rounded-3xl shadow-sm">
-                    <CardHeader className="border-b border-slate-100 pb-4">
-                      <CardTitle className="text-slate-400 text-xs uppercase tracking-[0.2em] font-bold">Interés Generado</CardTitle>
+                  <Card className="border-2 border-secondary/20 bg-white overflow-hidden rounded-3xl shadow-md hover:shadow-lg transition-shadow">
+                    <CardHeader className="bg-gradient-to-r from-slate-50 to-blue-50 border-b border-slate-100 pb-5 pt-5">
+                      <CardTitle className="text-secondary text-xs uppercase tracking-[0.2em] font-bold flex items-center gap-2">
+                        <TrendingUp className="w-4 h-4" />
+                        Interés Generado
+                      </CardTitle>
                     </CardHeader>
                     <CardContent className="pt-8 pb-8">
                       <p className="text-5xl font-black text-secondary">
                         ${result.estimatedProfit.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </p>
-                      <p className="text-sm text-slate-400 mt-3 font-medium flex items-center gap-2">
+                      <p className="text-sm text-slate-500 mt-4 font-medium flex items-center gap-2">
+                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-accent"></span>
                         Tasa E.A. aplicada: {(form.getValues().annualInterestRate * 100).toFixed(1)}%
                       </p>
                     </CardContent>
                   </Card>
 
-                  <Card className="border-none bg-primary text-white overflow-hidden shadow-xl rounded-3xl relative">
-                    <CardHeader className="border-b border-white/5 pb-4 relative z-10">
-                      <CardTitle className="text-accent text-xs uppercase tracking-[0.2em] font-bold">Saldo Total Proyectado</CardTitle>
+                  <Card className="border-none bg-gradient-to-br from-primary via-primary to-[#002850] text-white overflow-hidden shadow-2xl rounded-3xl relative group">
+                    <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjAzIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-40"></div>
+                    <CardHeader className="border-b border-white/10 pb-5 pt-6 relative z-10">
+                      <CardTitle className="text-accent text-xs uppercase tracking-[0.25em] font-bold flex items-center gap-2">
+                        <DollarSign className="w-4 h-4" />
+                        Saldo Total Proyectado
+                      </CardTitle>
                     </CardHeader>
                     <CardContent className="pt-10 pb-12 relative z-10">
-                      <p className="text-6xl font-black text-white tracking-tighter">
+                      <div className="mb-2">
+                        <span className="text-blue-200 text-sm font-semibold uppercase tracking-wider">Tu inversión crecerá a</span>
+                      </div>
+                      <p className="text-6xl md:text-7xl font-black text-white tracking-tight mb-1">
                         ${result.totalBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </p>
-                      <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between text-slate-300 text-sm">
-                        <span>Inversión total:</span>
-                        <span className="font-bold text-white text-lg">${(form.getValues().initialAmount + (form.getValues().monthlyContribution * form.getValues().months)).toLocaleString()}</span>
+                      <p className="text-accent/90 text-sm font-semibold mt-1">COP</p>
+                      <div className="mt-10 pt-6 border-t border-white/20 bg-white/5 -mx-8 px-8 py-6 rounded-t-2xl">
+                        <div className="flex items-center justify-between mb-3">
+                          <span className="text-blue-100 text-sm font-medium">Inversión total:</span>
+                          <span className="font-bold text-white text-xl">${(form.getValues().initialAmount + (form.getValues().monthlyContribution * form.getValues().months)).toLocaleString()}</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-blue-100 text-sm font-medium">Ganancia neta:</span>
+                          <span className="font-bold text-accent text-xl">+${result.estimatedProfit.toLocaleString()}</span>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
 
-                  <div className="p-8 bg-slate-50 border border-slate-200 rounded-3xl">
-                    <p className="text-slate-600 font-bold mb-6">¿Te gustan estos resultados? Empieza a ahorrar hoy con el banco más sólido de Colombia.</p>
-                    <Button asChild className="w-full bg-secondary text-white hover:bg-secondary/90 transition-all font-bold h-12 rounded-xl">
-                      <Link href="/onboarding">Solicitar Producto Ahora <ArrowRight className="ml-2 h-4 w-4" /></Link>
+                  <div className="p-8 bg-gradient-to-br from-blue-50 to-slate-50 border-2 border-secondary/20 rounded-3xl">
+                    <p className="text-primary font-bold mb-6 text-center">¿Te gustan estos resultados? Empieza a ahorrar hoy con la solidez de Banco Belolli.</p>
+                    <Button asChild className="w-full bg-secondary text-white hover:bg-secondary/90 transition-all font-bold h-14 rounded-xl shadow-md hover:shadow-lg">
+                      <Link href="/onboarding">Solicitar Producto Ahora <ArrowRight className="ml-2 h-5 w-5" /></Link>
                     </Button>
                   </div>
                 </motion.div>

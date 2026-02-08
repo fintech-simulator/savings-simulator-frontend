@@ -5,10 +5,12 @@ import { Input } from "@/presentation/components/ui/input";
 import { Button } from "@/presentation/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/presentation/components/ui/card";
 import { ProductSkeleton } from "@/presentation/components/ui/skeleton";
-import { ChevronLeft, ChevronRight, Search, Info, PiggyBank, Briefcase } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search, Info, Home } from "lucide-react";
 import { Product } from "@/domain/entities";
 import Link from "next/link";
 import React from "react";
+import { ProductTypeIcon } from "@/presentation/components/products/ProductTypeIcon";
+import { ProductTypeBadge } from "@/presentation/components/products/ProductTypeBadge";
 
 export default function ProductsPage() {
   const { data: response, isLoading, filters, setFilters, setPage } = useProducts();
@@ -21,18 +23,25 @@ export default function ProductsPage() {
 
   return (
     <div className="container mx-auto py-12 px-4 lg:px-8">
+      <div className="mb-8">
+        <Link href="/" className="inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-secondary transition-colors group">
+          <Home className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+          Volver a Inicio
+        </Link>
+      </div>
+
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
         <div>
-          <h1 className="text-3xl font-bold text-primary mb-2">Nuestros Productos</h1>
-          <p className="text-slate-500">Encuentra la cuenta de ahorros que mejor se adapte a tus metas.</p>
+          <h1 className="text-4xl font-extrabold text-primary mb-3 tracking-tight">Nuestros Productos</h1>
+          <p className="text-slate-600 text-lg font-medium">Encuentra la cuenta de ahorros que mejor se adapte a tus metas.</p>
         </div>
 
         <div className="relative w-full md:w-96">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
           <Input
             type="text"
             placeholder="Buscar por nombre..."
-            className="pl-10 h-12 rounded-full border-slate-200 focus:ring-primary shadow-sm"
+            className="pl-11 h-14 rounded-xl border-slate-200 focus:ring-secondary focus:border-secondary shadow-sm"
             value={filters.name || ""}
             onChange={handleSearchChange}
           />
@@ -40,45 +49,39 @@ export default function ProductsPage() {
       </div>
 
       {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <ProductSkeleton key={i} />
           ))}
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {products?.map((product: Product) => (
-              <Card key={product.id} className="group border-slate-200 transition-all hover:shadow-xl hover:border-accent/50 rounded-2xl overflow-hidden flex flex-col">
-                <CardHeader className="bg-slate-50/50 pb-4">
+              <Card key={product.id} className="group border-2 border-slate-200 transition-all hover:shadow-xl hover:border-secondary/30 rounded-2xl overflow-hidden flex flex-col">
+                <CardHeader className="bg-gradient-to-br from-slate-50 to-blue-50/20 pb-4 pt-5">
                   <div className="flex items-center justify-between mb-2">
-                    {product.type === "Ahorro" ? (
-                      <PiggyBank className="w-8 h-8 text-primary" />
-                    ) : (
-                      <Briefcase className="w-8 h-8 text-primary" />
-                    )}
-                    <span className="text-xs font-bold uppercase tracking-widest text-secondary bg-secondary/10 px-3 py-1 rounded-full">
-                      {product.type}
-                    </span>
+                    <ProductTypeIcon type={product.type as "Ahorro" | "Programado" | "Inversión"} />
+                    <ProductTypeBadge type={product.type as "Ahorro" | "Programado" | "Inversión"} />
                   </div>
-                  <CardTitle className="text-xl group-hover:text-primary transition-colors">{product.name}</CardTitle>
-                  <CardDescription className="line-clamp-2">{product.description}</CardDescription>
+                  <CardTitle className="text-xl font-bold text-primary group-hover:text-secondary transition-colors">{product.name}</CardTitle>
+                  <CardDescription className="line-clamp-2 text-slate-600 text-sm">{product.description}</CardDescription>
                 </CardHeader>
-                <CardContent className="grow pt-6">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="p-3 bg-slate-50 rounded-xl">
-                      <p className="text-[10px] text-slate-400 uppercase font-bold mb-1">Tasa E.A.</p>
-                      <p className="text-lg font-bold text-primary">{(product.interestRate * 100).toFixed(1)}%</p>
+                <CardContent className="grow pt-5 pb-4">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="p-3 bg-white border border-secondary/10 rounded-lg">
+                      <p className="text-[10px] text-secondary uppercase font-bold mb-1.5 tracking-wide">Tasa E.A.</p>
+                      <p className="text-xl font-black text-primary">{(product.interestRate * 100).toFixed(1)}%</p>
                     </div>
-                    <div className="p-3 bg-slate-50 rounded-xl">
-                      <p className="text-[10px] text-slate-400 uppercase font-bold mb-1">Mínimo</p>
-                      <p className="text-lg font-bold text-primary">${product.minAmount.toLocaleString()}</p>
+                    <div className="p-3 bg-white border border-secondary/10 rounded-lg">
+                      <p className="text-[10px] text-secondary uppercase font-bold mb-1.5 tracking-wide">Mínimo</p>
+                      <p className="text-xl font-black text-primary">${product.minAmount.toLocaleString()}</p>
                     </div>
                   </div>
                 </CardContent>
-                <CardFooter className="pt-0 pb-6 h-auto">
-                  <Button asChild className="w-full bg-primary hover:bg-primary/90 text-white font-bold h-11 rounded-xl shadow-md">
-                    <Link href="/simulator">
+                <CardFooter className="pt-0 pb-5 px-6">
+                  <Button asChild className="w-full bg-secondary hover:bg-secondary/90 text-white font-bold h-12 rounded-xl shadow-md hover:shadow-lg transition-all">
+                    <Link href={`/simulator?rate=${product.interestRate}&min=${product.minAmount}&product=${encodeURIComponent(product.name)}`}>
                       Simular Rentabilidad
                     </Link>
                   </Button>
@@ -102,7 +105,7 @@ export default function ProductsPage() {
 
               <div className="flex items-center gap-3">
                 <span className="text-sm font-medium text-slate-500">Página</span>
-                <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-primary text-white font-bold shadow-lg">
+                <div className="h-12 w-12 flex items-center justify-center rounded-xl bg-secondary text-white font-bold shadow-lg">
                   {meta.page}
                 </div>
                 <span className="text-sm font-medium text-slate-500">de {meta.totalPages}</span>

@@ -1,20 +1,20 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #0f172a;
-  /* Corporate Navy */
+  --color-primary: #003e6c;
+  /* Deep Corporate Navy - Brand Background */
   --color-primary-foreground: #ffffff;
 
   --color-secondary: #0063a7;
-  /* Clean Solid Blue */
+  /* Corporate Blue - Brand Actions */
   --color-secondary-foreground: #ffffff;
 
-  --color-accent: #0ea5e9;
-  /* Professional Cyber Blue */
+  --color-accent: #3b9ed8;
+  /* Soft Tech Blue - Highlights */
   --color-accent-foreground: #ffffff;
 
   --color-card: #ffffff;
-  --color-card-foreground: #0f172a;
+  --color-card-foreground: #003e6c;
 
   --color-muted: #f8fafc;
   --color-muted-foreground: #64748b;
@@ -49,29 +49,29 @@
 
 :root {
   --background: #f8fafc;
-  --foreground: #0f172a;
+  --foreground: #003e6c;
 
-  --primary: 222.2 47.4% 11.2%;
-  --secondary: 199 89% 48%;
+  --primary: 214 100% 21%;
+  --secondary: 203 94% 33%;
 
   --card: 0 0% 100%;
-  --card-foreground: 222.2 84% 4.9%;
+  --card-foreground: 214 100% 21%;
 
   --popover: 0 0% 100%;
-  --popover-foreground: 222.2 84% 4.9%;
+  --popover-foreground: 214 100% 21%;
 
   --muted: 210 40% 96.1%;
   --muted-foreground: 215.4 16.3% 46.9%;
 
-  --accent: 210 40% 96.1%;
-  --accent-foreground: 222.2 47.4% 11.2%;
+  --accent: 203 65% 54%;
+  --accent-foreground: 0 0% 100%;
 
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 210 40% 98%;
 
   --border: 214.3 32.1% 91.4%;
   --input: 214.3 32.1% 91.4%;
-  --ring: 199 89% 48%;
+  --ring: 203 94% 33%;
 
   --radius: 0.5rem;
 }
