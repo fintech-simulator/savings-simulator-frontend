@@ -11,9 +11,13 @@ import Link from "next/link";
 import React from "react";
 import { ProductTypeIcon } from "@/presentation/components/products/ProductTypeIcon";
 import { ProductTypeBadge } from "@/presentation/components/products/ProductTypeBadge";
+import { useProductSelection } from "@/shared/stores/useProductSelection";
+import { useRouter } from "next/navigation";
 
 export default function ProductsPage() {
   const { data: response, isLoading, filters, setFilters, setPage } = useProducts();
+  const { setSelectedProduct } = useProductSelection();
+  const router = useRouter();
   const products = response?.data;
   const meta = response?.meta;
 
@@ -80,10 +84,19 @@ export default function ProductsPage() {
                   </div>
                 </CardContent>
                 <CardFooter className="pt-0 pb-5 px-6">
-                  <Button asChild className="w-full bg-secondary hover:bg-secondary/90 text-white font-bold h-12 rounded-xl shadow-md hover:shadow-lg transition-all">
-                    <Link href={`/simulator?rate=${product.interestRate}&min=${product.minAmount}&product=${encodeURIComponent(product.name)}`}>
-                      Simular Rentabilidad
-                    </Link>
+                  <Button
+                    onClick={() => {
+                      setSelectedProduct({
+                        name: product.name,
+                        type: product.type as "Ahorro" | "Programado" | "Inversión",
+                        interestRate: product.interestRate,
+                        minAmount: product.minAmount,
+                      });
+                      router.push("/simulator");
+                    }}
+                    className="w-full bg-secondary hover:bg-secondary/90 text-white font-bold h-12 rounded-xl shadow-md hover:shadow-lg transition-all"
+                  >
+                    Simular Rentabilidad
                   </Button>
                 </CardFooter>
               </Card>

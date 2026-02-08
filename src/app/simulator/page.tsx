@@ -12,7 +12,8 @@ import { Calculator, TrendingUp, DollarSign, Calendar, ArrowRight, Loader2, Chev
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { useSearchParams } from "next/navigation";
+import { SelectedProductCard } from "@/presentation/components/products/SelectedProductCard";
+import { useProductSelection } from "@/shared/stores/useProductSelection";
 
 const formSchema = z.object({
   initialAmount: z.coerce.number().min(10000, "El monto inicial debe ser al menos $10.000"),
@@ -25,8 +26,8 @@ type FormValues = z.infer<typeof formSchema>;
 
 export default function SimulatorPage() {
   const [result, setResult] = useState<{ estimatedProfit: number; totalBalance: number } | null>(null);
+  const { selectedProduct, clearSelectedProduct } = useProductSelection();
   const simulation = useSimulation();
-  const searchParams = useSearchParams();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema) as any,
@@ -38,18 +39,13 @@ export default function SimulatorPage() {
     },
   });
 
-  // Pre-fill form with URL parameters
+  // Pre-fill form from selected product
   useEffect(() => {
-    const rate = searchParams.get("rate");
-    const min = searchParams.get("min");
-
-    if (rate) {
-      form.setValue("annualInterestRate", parseFloat(rate));
+    if (selectedProduct) {
+      form.setValue("annualInterestRate", selectedProduct.interestRate);
+      form.setValue("initialAmount", selectedProduct.minAmount);
     }
-    if (min) {
-      form.setValue("initialAmount", parseFloat(min));
-    }
-  }, [searchParams, form]);
+  }, [selectedProduct, form]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
@@ -74,6 +70,21 @@ export default function SimulatorPage() {
             Volver a Productos
           </Link>
         </div>
+
+        {/* Selected Product Card */}
+        {selectedProduct && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6"
+          >
+            <SelectedProductCard
+              productName={selectedProduct.name}
+              productType={selectedProduct.type}
+              onDismiss={clearSelectedProduct}
+            />
+          </motion.div>
+        )}
 
         <div className="text-center mb-16">
           <h1 className="text-5xl font-extrabold text-primary mb-4 tracking-tight">Simulador de Ahorro</h1>

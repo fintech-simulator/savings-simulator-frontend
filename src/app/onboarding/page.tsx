@@ -8,10 +8,9 @@ import { Button } from "@/presentation/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/presentation/components/ui/form";
 import { Input } from "@/presentation/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/presentation/components/ui/card";
-import { User, FileText, Mail, Shield, CheckCircle, Loader2, ChevronLeft } from "lucide-react";
+import { User, FileText, Mail, CheckCircle, Loader2, ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
-import { cn } from "@/shared/utils/cn";
 
 const formSchema = z.object({
   name: z.string().min(3, "El nombre debe tener al menos 3 caracteres"),
@@ -32,7 +31,7 @@ export default function OnboardingPage() {
       name: "",
       document: "",
       email: "",
-      recaptchaToken: "",
+      recaptchaToken: "OK", // Pre-filled for simulated reCAPTCHA
     },
   });
 
@@ -139,39 +138,19 @@ export default function OnboardingPage() {
                 )}
               />
 
-              {/* Simulated Recaptcha */}
-              <Card className="bg-gradient-to-br from-blue-50 to-slate-50 border-2 border-secondary/20 rounded-2xl overflow-hidden">
-                <CardContent className="p-5 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Shield className="w-9 h-9 text-secondary" />
-                    <div>
-                      <p className="text-sm font-bold text-primary leading-tight">Verificación</p>
-                      <p className="text-xs text-slate-500 font-medium">Protegido por reCAPTCHA</p>
-                    </div>
-                  </div>
-                  <FormField
-                    control={form.control}
-                    name="recaptchaToken"
-                    render={({ field }) => (
-                      <FormItem className="space-y-0">
-                        <FormControl>
-                          <div className="flex flex-col items-end gap-1">
-                            <Input
-                              placeholder="Escribe 'OK'"
-                              {...field}
-                              className={cn(
-                                "w-32 h-11 text-center font-bold uppercase tracking-wider border-2",
-                                field.value === "OK" ? "border-green-500 bg-green-50 text-green-700" : "border-secondary/30"
-                              )}
-                            />
-                            <FormMessage className="text-[10px]" />
-                          </div>
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                </CardContent>
-              </Card>
+
+              {/* Hidden Recaptcha Token - Pre-filled with "OK" for simulation */}
+              <FormField
+                control={form.control}
+                name="recaptchaToken"
+                render={({ field }) => (
+                  <FormItem className="hidden">
+                    <FormControl>
+                      <Input type="hidden" {...field} value="OK" />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
               <Button type="submit" className="w-full bg-secondary hover:bg-secondary/90 text-white font-bold h-16 rounded-xl shadow-lg hover:shadow-xl transition-all" disabled={onboarding.isPending}>
                 {onboarding.isPending ? <Loader2 className="animate-spin mr-2" /> : "Iniciar Apertura Ahora"}
