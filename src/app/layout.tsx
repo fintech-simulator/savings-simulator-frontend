@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Simulador de Ahorro Digital | Banco Caja Social",
+  title: "Simulador de Ahorro Digital | Banco Belolli",
   description: "Explora nuestros productos de ahorro y simula tu rentabilidad.",
 };
 

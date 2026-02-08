@@ -51,7 +51,7 @@ export default function Home() {
       <section className="py-24 bg-white">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl font-bold text-primary mb-4">¿Por qué ahorrar con nosotros?</h2>
+            <h2 className="text-3xl font-bold text-primary mb-4">¿Por qué ahorrar con Banco Belolli?</h2>
             <p className="text-slate-500">
               Ofrecemos herramientas digitales diseñadas para brindarte seguridad, transparencia y la mejor rentabilidad.
             </p>

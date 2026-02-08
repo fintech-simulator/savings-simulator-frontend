@@ -1,6 +1,6 @@
-# Simulador de Ahorro Digital - Frontend PRO
+# Simulador de Ahorro Digital - Banco Belolli
 
-Prueba Técnica desarrollada con una arquitectura por capas (Clean Architecture) para Banco Caja Social.
+Prueba Técnica desarrollada con una arquitectura por capas (Clean Architecture).
 
 ## 🚀 Tecnologías
 
@@ -9,18 +9,15 @@ Prueba Técnica desarrollada con una arquitectura por capas (Clean Architecture)
 - **Estilos**: Tailwind CSS 4
 - **Estado/Data**: React Query + Axios + Zustand
 - **Formularios**: React Hook Form + Zod
-- **UI Components**: Shadcn UI (Radix UI)
-- **PWA**: Soporte nativo y manifiesto
 
 ## 🏗 Arquitectura (PRO / Enterprise)
 
 El proyecto está estructurado en capas para asegurar que el framework sea un detalle y el dominio sea independiente:
 
-1. **Infrastructure**: Implementación de Axios y repositorios concretos.
-2. **Domain**: Definición de entidades, tipos e interfaces (contratos).
-3. **Application**: Casos de uso implementados a través de hooks (`useProducts`, `useSimulation`, `useOnboarding`).
-4. **Presentation**: Componentes de UI, layouts y el App Router de Next.js.
-5. **Shared**: Utilidades transversales y constantes.
+1. **Infrastructure**: Implementación de Axios y repositorios concretos con persistencia en localStorage para datos de sesión.
+2. **Domain**: Contratos, entidades y tipos que definen el negocio sin dependencias externas.
+3. **Application**: Casos de uso implementados mediante Hooks de React (`useProducts`, `useSimulation`, `useOnboarding`), centralizando la lógica de negocio.
+4. **Presentation**: Componentes de UI basados en el sistema de diseño "Metallic Blue" y el App Router de Next.js.
 
 ## 📁 Estructura de Carpetas
 
@@ -35,15 +32,22 @@ src/
 └── shared/               # Utils & Constants
 ```
 
-## 🛠 Instalación y Ejecución
-
-1. Clonar el repositorio.
-2. Instalar dependencias: `npm install`
-3. Ejecutar en desarrollo: `npm run dev`
-4. Base URL de API (Configurada para local): `http://localhost:4005/api/`
-
 ## 💡 Decisiones de Diseño
 
-- **SSR/ISR**: Se utilizó renderizado híbrido. El listado de productos se beneficia de React Query para hidratación y búsqueda debounced en cliente.
-- **Aesthetics**: Se implementó un tema "Metallic Blue" con acentos rojos del Banco Caja Social, usando gradientes y glassmorphism para un look Premium.
-- **Validaciones**: Zod garantiza que los datos en el simulador y onboarding sean íntegros antes de llegar a la API.
+### Implementación de SSR e ISR
+
+Para la sección de **Productos**, hemos implementado una estrategia híbrida:
+
+- **ISR (Incremental Static Regeneration)**: La página de productos se genera estáticamente para garantizar tiempos de carga instantáneos y SEO superior. Se revalida en segundo plano para asegurar que las tasas y nuevos productos se actualicen sin necesidad de redesplegar.
+- **Client-Side Data**: Utilizamos React Query para manejar búsquedas en tiempo real con _debouncing_, lo que permite al usuario filtrar el catálogo sin latencia percibida.
+
+### Estética y Experiencia
+
+- **Diseño Premium**: Uso de gradientes metálicos, sombras profundas y _glassmorphism_ para reflejar la solidez de una institución financiera moderna.
+- **Validación Robusta**: Implementación de Zod en todos los formularios para prevenir errores de usuario antes de procesar depósitos o solicitudes.
+
+## 🛠 Instalación y Ejecución
+
+1. `npm install`
+2. `npm run dev` (Desarrollo)
+3. `npm run build` (Producción/Vercel)

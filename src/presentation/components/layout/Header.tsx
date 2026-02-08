@@ -19,8 +19,8 @@ export function Header() {
         <Link href="/" className="flex items-center gap-4 transition-opacity hover:opacity-90">
           <div className="relative h-12 w-48">
             <Image
-              src="/banco-caja-social-logo.png"
-              alt="Banco Caja Social"
+              src="/banco_belolli_logo.png"
+              alt="Banco Belolli"
               fill
               className="object-contain"
               priority

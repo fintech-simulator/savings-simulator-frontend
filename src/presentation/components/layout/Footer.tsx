@@ -6,7 +6,7 @@ export function Footer() {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
           <div>
-            <h3 className="text-lg font-bold text-primary mb-4">Banco Caja Social</h3>
+            <h3 className="text-lg font-bold text-primary mb-4">Banco Belolli</h3>
             <p className="text-sm text-slate-500 max-w-xs">
               Mas de 110 años acompañando el progreso de los colombianos.
             </p>
@@ -29,7 +29,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-12 pt-8 border-t text-center text-xs text-slate-400">
-          &copy; {new Date().getFullYear()} Banco Caja Social SA. Todos los derechos reservados.
+          &copy; {new Date().getFullYear()} Banco Belolli SA. Todos los derechos reservados.
         </div>
       </div>
     </footer>
