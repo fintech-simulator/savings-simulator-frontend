@@ -1,6 +1,6 @@
 import { cn } from "@/shared/utils/cn";
 
-type ProductType = "Ahorro" | "Programado" | "Inversión";
+type ProductType = "Ahorro" | "Programado" | "Inversión" | "Nómina";
 
 interface ProductTypeBadgeProps {
   type: ProductType;
@@ -11,6 +11,7 @@ const BADGE_STYLES = {
   Ahorro: "text-emerald-800 bg-emerald-100",
   Programado: "text-amber-800 bg-amber-100",
   Inversión: "text-purple-800 bg-purple-100",
+  Nómina: "text-blue-800 bg-blue-100",
 } as const;
 
 export function ProductTypeBadge({ type, className }: ProductTypeBadgeProps) {
