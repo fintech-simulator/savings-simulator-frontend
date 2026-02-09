@@ -6,9 +6,9 @@ import * as z from "zod";
 import { useSimulation } from "@/application/simulator/useSimulation";
 import { Button } from "@/presentation/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/presentation/components/ui/form";
-import { Input } from "@/presentation/components/ui/input";
+import { NumericInput } from "@/presentation/components/ui/numeric-input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/presentation/components/ui/card";
-import { Calculator, TrendingUp, DollarSign, Calendar, ArrowRight, Loader2, ChevronLeft } from "lucide-react";
+import { Calculator, TrendingUp, DollarSign, Calendar, ArrowRight, Loader2, ChevronLeft, Percent } from "lucide-react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -112,7 +112,7 @@ export default function SimulatorPage() {
                             <DollarSign className="w-4 h-4 text-primary" /> Monto inicial
                           </FormLabel>
                           <FormControl>
-                            <Input type="number" placeholder="Ej: 1000000" {...field} className="h-12" />
+                            <NumericInput placeholder="Ej: 1000000" {...field} className="h-12" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -127,7 +127,7 @@ export default function SimulatorPage() {
                             <TrendingUp className="w-4 h-4 text-primary" /> Aporte mensual
                           </FormLabel>
                           <FormControl>
-                            <Input type="number" placeholder="Ej: 100000" {...field} className="h-12" />
+                            <NumericInput placeholder="Ej: 100000" {...field} className="h-12" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -143,8 +143,9 @@ export default function SimulatorPage() {
                               <Calendar className="w-4 h-4 text-primary" /> Meses
                             </FormLabel>
                             <FormControl>
-                              <Input type="number" placeholder="Ej: 12" {...field} className="h-12" />
+                              <NumericInput placeholder="Ej: 12" {...field} className="h-12" />
                             </FormControl>
+                            <FormDescription className="text-[10px]">Plazo del ahorro (1-120)</FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -155,10 +156,10 @@ export default function SimulatorPage() {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel className="flex items-center gap-2">
-                              % Tasa E.A.
+                              <Percent className="w-4 h-4 text-primary" /> Tasa E.A.
                             </FormLabel>
                             <FormControl>
-                              <Input type="number" step="0.01" placeholder="Ej: 0.12" {...field} className="h-12" />
+                              <NumericInput allowDecimal placeholder="Ej: 0.12" {...field} className="h-12" />
                             </FormControl>
                             <FormDescription className="text-[10px]">Expresado en decimal (0.12 = 12%)</FormDescription>
                             <FormMessage />
@@ -195,7 +196,7 @@ export default function SimulatorPage() {
                   key="results"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="space-y-4"
+                  className="space-y-2 h-full flex flex-col justify-between"
                 >
                   <Card className="border-2 border-secondary/20 bg-white overflow-hidden rounded-2xl  shadow-md hover:shadow-lg transition-shadow">
                     <CardHeader className="bg-gradient-to-r from-slate-50 to-blue-50 border-b border-slate-100  flex items-center pt-2">
@@ -227,10 +228,11 @@ export default function SimulatorPage() {
                       <div className="mb-1">
                         <span className="text-blue-200 text-xs font-semibold uppercase tracking-wider">Tu inversión crecerá a</span>
                       </div>
-                      <p className="text-4xl font-black text-white tracking-tight">
+                      <p className="text-4xl font-black text-white tracking-tight flex gap-x-2">
                         ${result.totalBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        <span className="text-accent/90 text-base font-semibold">COP</span>
+
                       </p>
-                      <p className="text-accent/90 text-xs font-semibold mt-1">COP</p>
                       <div className="mt-2 pt-2 border-t border-white/20 bg-white/5 -mx-6 px-6 py-2 rounded-t-2xl">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-blue-100 text-xs font-medium">Inversión total:</span>

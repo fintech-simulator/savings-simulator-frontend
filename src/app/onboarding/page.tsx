@@ -7,6 +7,7 @@ import { useOnboarding } from "@/application/onboarding/useOnboarding";
 import { Button } from "@/presentation/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/presentation/components/ui/form";
 import { Input } from "@/presentation/components/ui/input";
+import { NumericInput } from "@/presentation/components/ui/numeric-input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/presentation/components/ui/card";
 import { User, FileText, Mail, CheckCircle, Loader2, ChevronLeft } from "lucide-react";
 import { useState } from "react";
@@ -116,7 +117,7 @@ export default function OnboardingPage() {
                       <FileText className="w-4 h-4 text-secondary" /> Documento de Identidad
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="C.C. o C.E." {...field} className="h-14 border-slate-200 focus:ring-secondary focus:border-secondary" />
+                      <NumericInput placeholder="C.C. o C.E." {...field} className="h-14 border-slate-200 focus:ring-secondary focus:border-secondary" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
