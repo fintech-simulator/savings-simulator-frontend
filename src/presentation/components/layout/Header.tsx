@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { cn } from "@/shared/utils/cn";
+import { MobileMenu } from "./MobileMenu";
 
 const navItems = [
   { name: "Inicio", href: "/" },
@@ -54,7 +55,8 @@ export function Header() {
           </Link>
         </nav>
 
-        {/* Mobile menu toggle could go here */}
+        {/* Mobile menu */}
+        <MobileMenu />
       </div>
     </header>
   );
