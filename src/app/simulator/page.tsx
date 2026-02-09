@@ -112,7 +112,7 @@ export default function SimulatorPage() {
                             <DollarSign className="w-4 h-4 text-primary" /> Monto inicial
                           </FormLabel>
                           <FormControl>
-                            <NumericInput placeholder="Ej: 1000000" {...field} className="h-12" />
+                            <NumericInput formatAsCurrency placeholder="Ej: 1000000" {...field} className="h-12" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -127,7 +127,7 @@ export default function SimulatorPage() {
                             <TrendingUp className="w-4 h-4 text-primary" /> Aporte mensual
                           </FormLabel>
                           <FormControl>
-                            <NumericInput placeholder="Ej: 100000" {...field} className="h-12" />
+                            <NumericInput formatAsCurrency placeholder="Ej: 100000" {...field} className="h-12" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -207,7 +207,7 @@ export default function SimulatorPage() {
                     </CardHeader>
                     <CardContent className="pb-2">
                       <p className="text-3xl font-black text-secondary">
-                        ${result.estimatedProfit.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        ${result.estimatedProfit.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </p>
                       <p className="text-xs text-slate-500 mt-3 font-medium flex items-center gap-2">
                         <span className="inline-block w-1.5 h-1.5 rounded-full bg-accent"></span>
@@ -229,18 +229,17 @@ export default function SimulatorPage() {
                         <span className="text-blue-200 text-xs font-semibold uppercase tracking-wider">Tu inversión crecerá a</span>
                       </div>
                       <p className="text-4xl font-black text-white tracking-tight flex gap-x-2">
-                        ${result.totalBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        ${result.totalBalance.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         <span className="text-accent/90 text-base font-semibold">COP</span>
-
                       </p>
                       <div className="mt-2 pt-2 border-t border-white/20 bg-white/5 -mx-6 px-6 py-2 rounded-t-2xl">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-blue-100 text-xs font-medium">Inversión total:</span>
-                          <span className="font-bold text-white text-lg">${(form.getValues().initialAmount + (form.getValues().monthlyContribution * form.getValues().months)).toLocaleString()}</span>
+                          <span className="font-bold text-white text-lg">${(Number(form.getValues().initialAmount) + (Number(form.getValues().monthlyContribution) * Number(form.getValues().months))).toLocaleString('es-CO')}</span>
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-blue-100 text-xs font-medium">Ganancia neta:</span>
-                          <span className="font-bold text-accent text-lg">+${result.estimatedProfit.toLocaleString()}</span>
+                          <span className="font-bold text-accent text-lg">+${result.estimatedProfit.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                         </div>
                       </div>
                     </CardContent>
